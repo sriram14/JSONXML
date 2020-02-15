@@ -1,7 +1,7 @@
 %{
 %}
 
-TEXT [a-zA-Z']+
+TEXT [a-zA-Z'/!@#$%^&*()_+\-\+=\|?></\.;]+
 NUM [0-9]+
 SPACE " "
 COLON :
@@ -17,7 +17,7 @@ COMMA ","
 "[" {  return OP_ABRAC;}
 "]" {  return CL_ABRAC;}
 {COLON} {  return COLON;}
-{TEXT} {  return TEXT;}
+{TEXT} { return TEXT;}
 {NUM}|{NUM}.{NUM} {  return NUM;}
 {COMMA} {  return COMMA; }
 
