@@ -21,17 +21,16 @@
 
 %%
 
-start : OP_BRAC CON CL_BRAC { printf("\nMatched");} 
+start : OP_BRAC CON CL_BRAC
 
-CON : OP_ABRAC start CL_ABRAC
-      | CON KEYVAL COMMAS {printf("\nCONS ET");}
-      | {printf("\nCONS");}
+CON : CON KEYVAL COMMAS
+    |
 
-KEYVAL : KEY COLON VAL { printf("\nasasas");}
+KEYVAL : KEY COLON VAL 
 
-COMMAS : COMMA | ;
+COMMAS : COMMA | 
 
-KEY : QUOT VALID QUOT { printf("\nKey");}
+KEY : QUOT VALID QUOT
 
 VAL : QUOT VALID QUOT
      | QUOT NUM VALID QUOT
@@ -39,8 +38,12 @@ VAL : QUOT VALID QUOT
      | NUM
      | BTRUE
      | BFALSE
-     | start {printf("\nBLOOPBLOOP");}
- 
+     | start
+     | ARRVAL
+
+ARRVAL : OP_ABRAC CONVAL CL_ABRAC
+
+CONVAL: CONVAL VAL COMMAS | ;
 
 VALID : VALID TEXT {};
        | VALID NUM {};
