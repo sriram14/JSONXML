@@ -5,6 +5,10 @@
     
 %}
 
+%union {
+    char *str;
+}
+
 %token QUOT
 %token TEXT
 %token NUM
@@ -19,16 +23,14 @@
 %token CL_ABRAC
 %error-verbose
 
+
 %%
 
-start : OP_BRAC CON CL_BRAC
+start : OP_BRAC CON KEYVAL CL_BRAC | OP_BRAC CL_BRAC
 
-CON : CON KEYVAL COMMAS
-    |
+CON : CON KEYVAL COMMA |
 
 KEYVAL : KEY COLON VAL 
-
-COMMAS : COMMA | 
 
 KEY : QUOT VALID QUOT
 
@@ -46,13 +48,13 @@ STRING :  STRING TEXT
         | NUM
         | COLON
 
-ARRVAL : OP_ABRAC CONVAL CL_ABRAC
+ARRVAL : OP_ABRAC CONVAL VAL CL_ABRAC | OP_ABRAC CL_ABRAC
 
-CONVAL : CONVAL VAL COMMAS | ;
+CONVAL : CONVAL VAL COMMA | ;
 
-VALID : VALID TEXT {};
-       | VALID NUM {};
-       | TEXT {};
+VALID : VALID TEXT
+       | VALID NUM
+       | TEXT
 
 %%
   
