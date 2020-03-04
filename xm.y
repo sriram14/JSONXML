@@ -19,6 +19,7 @@
 
 
 %token <str> STEXT
+%token <str> ETEXT
 %token <str> TEXT
 %token <str> NUM
 %token <str> BTRUE
@@ -55,11 +56,13 @@ VAL : QUOT STRING QUOT {printf("%s",$2);}
      | ARRVAL {}
 
 STRING :  STRING STEXT {strcat($1,$2); $$=$1;}
+        | STRING ETEXT {strcat($1,$2); $$=$1;}
         | STRING TEXT  {strcat($1,$2); $$=$1;}
         | STRING NUM {strcat($1,$2); $$=$1;}
         | STRING COLON {char col[]=":";strcat($1,col); $$=$1;}
-        |  TEXT {$$=$1;}
-        |  STEXT {$$=$1;}
+        | TEXT {$$=$1;}
+        | STEXT {$$=$1;}
+        | ETEXT {$$=$1;}
         | NUM {$$=$1;}
         | COLON { $$=":";}
 
