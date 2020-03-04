@@ -60,8 +60,10 @@ STRING :  STRING STEXT {strcat($1,$2); $$=$1;}
         | STRING TEXT  {strcat($1,$2); $$=$1;}
         | STRING NUM {strcat($1,$2); $$=$1;}
         | STRING COLON {char col[]=":";strcat($1,col); $$=$1;}
+        | STRING COMMA {char comm[]=",";strcat($1,comm); $$=$1;}
         | TEXT {$$=$1;}
         | STEXT {$$=$1;}
+        | COMMA {$$=",";}
         | ETEXT {$$=$1;}
         | NUM {$$=$1;}
         | COLON { $$=":";}
@@ -72,9 +74,9 @@ ARRVAL :  OP_ABRAC CONVAL VAL CL_ABRAC {printf("</element>");}
 CONVAL :  CONVAL VAL COMMA {printf("</element>");printf("<element>"); }
         | {printf("<element>");}
         
-VALID : VALID TEXT {}
-       | VALID NUM {} 
-       | TEXT {}
+VALID : VALID TEXT {strcat($1,$2); $$=$1;}
+       | VALID NUM {strcat($1,$2); $$=$1;} 
+       | TEXT { $$=$1;}
 %%
   
 #include "lex.yy.c"  
