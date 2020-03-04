@@ -16,7 +16,8 @@ NUM [0-9]+
 "]" {  return CL_ABRAC;}
 ":" {   return COLON;}
 {TEXT} { yylval.str = strdup(yytext); return TEXT;}
-{TEXT}" " { yylval.str = strdup(yytext); return STEXT;}
+{TEXT}" " { yylval.str = strdup(yytext); return ETEXT;}
+" "{TEXT} { yylval.str = strdup(yytext); return STEXT;}
 {NUM}|{NUM}"."{NUM} {  yylval.str = strdup(yytext); return NUM;}
 "," {  return COMMA; }
 %%
