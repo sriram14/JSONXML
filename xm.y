@@ -7,7 +7,6 @@
 
 %union {
     char *str;
-    int n;
 }
 
 %token QUOT
@@ -16,12 +15,12 @@
 %token CL_BRAC
 %token OP_ABRAC
 %token CL_ABRAC
+%token  COLON
 
 
 %token <str> STEXT
 %token <str> TEXT
 %token <str> NUM
-%token  COLON
 %token <str> BTRUE
 %token <str> BFALSE
 %token <str> SPACE
@@ -34,7 +33,6 @@
 %type <str> KEYVAL
 %type <str> CON
 %type <str> start
-
 
 %error-verbose
 
