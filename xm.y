@@ -26,41 +26,43 @@
 %token <str> BFALSE
 %token <str> SPACE
 
-%type <str> STRING
-%type <str> VALID
-%type <str> VAL
-%type <str> KEY
-%type <str> CONVAL
-%type <str> KEYVAL
-%type <str> CON
+%type <str> string
+%type <str> valid
+%type <str> val
+%type <str> key
+%type <str> conval
+%type <str> keyval
+%type <str> con
 %type <str> start
 
 %error-verbose
 
 %%
 
-start : OP_BRAC CON KEYVAL CL_BRAC {} | OP_BRAC CL_BRAC {}
+start : arrval{} | keyvalstart {}
 
-CON : CON KEYVAL COMMA {} | {}
+keyvalstart: OP_BRAC con keyval CL_BRAC {} | OP_BRAC CL_BRAC {}
 
-KEYVAL : KEY COLON VAL {printf("</%s>",$1);}     
+con : con keyval COMMA {} | {}
 
-KEY : QUOT VALID QUOT { $$=$2; printf("<%s>",$2);}
+keyval : key COLON val {printf("</%s>",$1);}     
 
-VAL : QUOT STRING QUOT {printf("%s",$2);}
+key : QUOT valid QUOT { $$=$2; printf("<%s>",$2);}
+
+val : QUOT string QUOT {printf("%s",$2);}
      | QUOT QUOT {}
      | NUM {printf("%s",$1);}
      | BTRUE {printf("%s",$1);}
      | BFALSE {printf("%s",$1);}
-     | start {}
-     | ARRVAL {}
+     | keyvalstart {}
+     | arrval {}
 
-STRING :  STRING STEXT {strcat($1,$2); $$=$1;}
-        | STRING ETEXT {strcat($1,$2); $$=$1;}
-        | STRING TEXT  {strcat($1,$2); $$=$1;}
-        | STRING NUM {strcat($1,$2); $$=$1;}
-        | STRING COLON {char col[]=":";strcat($1,col); $$=$1;}
-        | STRING COMMA {char comm[]=",";strcat($1,comm); $$=$1;}
+string :  string STEXT {strcat($1,$2); $$=$1;}
+        | string ETEXT {strcat($1,$2); $$=$1;}
+        | string TEXT  {strcat($1,$2); $$=$1;}
+        | string NUM {strcat($1,$2); $$=$1;}
+        | string COLON {char col[]=":";strcat($1,col); $$=$1;}
+        | string COMMA {char comm[]=",";strcat($1,comm); $$=$1;}
         | TEXT {$$=$1;}
         | STEXT {$$=$1;}
         | COMMA {$$=",";}
@@ -68,14 +70,14 @@ STRING :  STRING STEXT {strcat($1,$2); $$=$1;}
         | NUM {$$=$1;}
         | COLON { $$=":";}
 
-ARRVAL :  OP_ABRAC CONVAL VAL CL_ABRAC {printf("</element>");}
+arrval :  OP_ABRAC conval val CL_ABRAC {printf("</element>");}
         | OP_ABRAC CL_ABRAC {}
        
-CONVAL :  CONVAL VAL COMMA {printf("</element>");printf("<element>"); }
+conval :  conval val COMMA {printf("</element>");printf("<element>"); }
         | {printf("<element>");}
         
-VALID : VALID TEXT {strcat($1,$2); $$=$1;}
-       | VALID NUM {strcat($1,$2); $$=$1;} 
+valid : valid TEXT {strcat($1,$2); $$=$1;}
+       | valid NUM {strcat($1,$2); $$=$1;} 
        | TEXT { $$=$1;}
 %%
   
