@@ -7,8 +7,8 @@ NUM [0-9]+"."?[0-9]*
 
 %%
 
-"true" { yylval.str = strdup(yytext); return BTRUE;}
-"false" { yylval.str = strdup(yytext); return BFALSE;}
+" "*"true"" "* { yylval.str = strdup(yytext); return BTRUE;}
+" "*"false"" "* { yylval.str = strdup(yytext); return BFALSE;}
 "\"" {  return QUOT;} 
 "{" {  return OP_BRAC;}
 "}" {  return CL_BRAC;}
@@ -16,8 +16,8 @@ NUM [0-9]+"."?[0-9]*
 "]" {  return CL_ABRAC;}
 ":" {   return COLON;}
 {TEXT} { yylval.str = strdup(yytext); return TEXT;}
-{TEXT}{NUM}*" "*{NUM}*" "+ { yylval.str = strdup(yytext); return ETEXT;}
-{NUM}*" "+{TEXT}{NUM}* { yylval.str = strdup(yytext); return STEXT;}
+{TEXT}{NUM}*" "*{NUM}*" "+|" "*{NUM}" "+{NUM}" "* { yylval.str = strdup(yytext); return ETEXT;}
+{NUM}*" "+{TEXT}" "*{NUM}* { yylval.str = strdup(yytext); return STEXT;}
 {NUM} {  yylval.str = strdup(yytext); return NUM;}
 "," {  return COMMA; }
 %%
